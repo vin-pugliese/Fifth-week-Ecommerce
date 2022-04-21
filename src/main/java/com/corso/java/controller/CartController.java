@@ -37,15 +37,19 @@ public class CartController {
         return new ResponseEntity<>(cart1, HttpStatus.OK);
     }
 
-    @PutMapping(path="/add")
-    ResponseEntity<Void> addProduct(@RequestParam String idcart, @RequestParam String idprod, @RequestParam Integer qty, @RequestBody Product x){
-        cartService.addProduct(idcart, idprod, qty, x);
+    @PostMapping(path="/add")
+    //ResponseEntity<Void> addProduct(@RequestParam String idcart, @RequestParam String idprod, @RequestParam Integer qty){
+    ResponseEntity<Void> addProduct(@RequestParam  String idcart, @RequestBody Product product){
+        //cartService.addProduct(idcart, idprod, qty);
+        System.out.println("controller: " +product.toString());
+        cartService.addProduct(idcart, product);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @PutMapping(path="/checkout/{id}")
     ResponseEntity<Void> checkout(@PathVariable String id){
         cartService.checkout(id);
+        System.out.println("ciomprato");
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 

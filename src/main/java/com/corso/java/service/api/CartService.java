@@ -18,7 +18,8 @@ public interface CartService {
 
     void delete(String id);
 
-    void addProduct(String idcart,  String idProd, Integer qty, Product x);
+    //void addProduct(String idcart,  String idProd, Integer qty);
+    void addProduct(String idcart, Product product);
 
     void checkout(String id);
 

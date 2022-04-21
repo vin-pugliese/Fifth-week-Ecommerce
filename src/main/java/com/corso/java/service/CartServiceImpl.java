@@ -47,11 +47,24 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void addProduct(String idcart, String idProd, Integer qty, Product x) {
+    public void addProduct(String idcart, Product product) {
+        Optional<Cart> cart = cartRepository.findById(idcart);
+        cart.ifPresent(s->{
+                List<Product> prod = s.getProducts();
+                prod.add(product);
+                s.setProducts(prod);
+                cartRepository.save(s);
+                for(Product p: s.getProducts())         //test
+                    System.out.println(p.toString());
+        });
+    }
+/*
+    @Override
+    public void addProduct(String idcart, String idProd, Integer qty) {
         Optional<Cart> cart = cartRepository.findById(idcart);
         cart.ifPresent(s->{
             Optional<Product> product = productService.findById(idProd);
-            product.ifPresent(z->{
+            product.ifPresent( z->{
                 z.setQty(qty);
                 s.getProducts().add(z);
                 cartRepository.save(s);
@@ -61,6 +74,8 @@ public class CartServiceImpl implements CartService {
 
         });
     }
+    */
+
 
     @Override
     public void checkout(String id) {
@@ -68,7 +83,9 @@ public class CartServiceImpl implements CartService {
         cart.ifPresent(s->{
             for(Product p: s.getProducts())
                 productService.updateQty(p.getId(), p.getQty());
-            s.getProducts().removeAll(s.getProducts());
+            List<Product> prod = s.getProducts();
+            prod.removeAll(prod);
+            s.setProducts(prod);
             cartRepository.save(s);
         });
     }
